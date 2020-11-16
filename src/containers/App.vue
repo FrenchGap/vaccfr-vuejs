@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <app-navigation />
     <v-content transition="slide-x-transition">
       <router-view></router-view>
     </v-content>
@@ -7,8 +8,10 @@
 </template>
 
 <script>
+import AppNavigation from '../components/AppNavigation.vue';
 export default {
-  name: 'App'
+  components: { AppNavigation },
+  name: 'AppContainer'
 };
 </script>
 
