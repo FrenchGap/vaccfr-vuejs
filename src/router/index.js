@@ -7,7 +7,7 @@ const routes = [
   {
     path: '/',
     name: 'AppRoot',
-    component: () => import('../containers/MainApp'),
+    component: () => import('../containers/LandingPage'),
     children: [
       {
         path: '/',
@@ -47,10 +47,10 @@ const routes = [
       },
     ]
   },
-  {
-    path: '*',
-    redirect: 'AppRoot'
-  }
+  // {
+  //   path: '*',
+  //   redirect: 'AppRoot'
+  // }
 ]
 
 const router = new VueRouter({

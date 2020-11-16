@@ -49,15 +49,12 @@ export default {
         { title: "Feedback", url: "/Feedback" },
         { title: "Login", url: "/login" },
       ],
-      logoPath: require('../assets/vaccfr.png'),
-      mastheadPath: require('../assets/media/banner_vacc_france.jpg'),
+      logoPath: require('../../assets/vaccfr.png'),
+      mastheadPath: require('../../assets/media/banner_vacc_france.jpg'),
     }
   }
 }
 </script>
 
 <style scoped>
-.siteLogo {
-  background-image: url('../assets/vaccfr.png');
-}
 </style>
