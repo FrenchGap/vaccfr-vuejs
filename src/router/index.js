@@ -6,7 +6,6 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'AppRoot',
     component: () => import('../containers/LandingPage'),
     children: [
       {
@@ -17,7 +16,7 @@ const routes = [
       {
         path: '/atc',
         name: 'ATC',
-        component: () => import('../views/Landingpage/Home'),
+        component: () => import('../views/Landingpage/ATC'),
       },
       {
         path: '/pilots',
@@ -47,10 +46,10 @@ const routes = [
       },
     ]
   },
-  // {
-  //   path: '*',
-  //   redirect: 'AppRoot'
-  // }
+  {
+    path: '*',
+    component: () => import('../views/Landingpage/Home'),
+  }
 ]
 
 const router = new VueRouter({

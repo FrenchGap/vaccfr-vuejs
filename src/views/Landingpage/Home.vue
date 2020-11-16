@@ -122,6 +122,9 @@ export default {
     return {
       
     }
+  },
+  mounted() {
+    this.$emit('mastHeadRequired', require('../../assets/media/banner_vacc_france.jpg'));
   }
 }
 </script>

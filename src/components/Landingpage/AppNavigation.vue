@@ -37,6 +37,12 @@
 <script>
 export default {
   name: "AppNavigation",
+  props: {
+    mastheadPath: {
+      required: true,
+      default: require('../../assets/media/banner_vacc_france.jpg')
+    }
+  },
   data () {
     return {
       appTitle: "French vACC",
@@ -50,7 +56,6 @@ export default {
         { title: "Login", url: "/login" },
       ],
       logoPath: require('../../assets/vaccfr.png'),
-      mastheadPath: require('../../assets/media/banner_vacc_france.jpg'),
     }
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <app-navigation />
-    <v-content transition="slide-x-transition">
-      <router-view></router-view>
-    </v-content>
+    <app-navigation :mastheadPath="mastheadImageLink" />
+    <v-main transition="slide-x-transition">
+      <router-view @mastHeadRequired="newMastheadImage"></router-view>
+    </v-main>
     <AppFooter />
   </v-app>
 </template>
@@ -13,7 +13,17 @@ import AppNavigation from '../components/Landingpage/AppNavigation.vue';
 import AppFooter from '../components/Landingpage/Footer.vue';
 export default {
   components: { AppNavigation, AppFooter },
-  name: 'LandingPageContainer'
+  name: 'LandingPageContainer',
+  data() {
+    return {
+      mastheadImageLink: require('../assets/media/banner_vacc_france.jpg')
+    }
+  },
+  methods: {
+    newMastheadImage(link) {
+      this.mastheadImageLink = link;
+    }
+  }
 };
 </script>
 
