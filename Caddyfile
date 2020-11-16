@@ -1,0 +1,6 @@
+https://vuedev.vatsim.fr {
+    root * /var/www/vuedev/public
+
+    encode gzip
+    file_server
+}
