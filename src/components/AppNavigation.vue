@@ -1,28 +1,37 @@
 <template>
-  <v-app-bar
-    app
-    flat
-    color="black"
+  <v-parallax
+    :src="mastheadPath"
+    class="masthead"
     dark
-    clipped-left
+    max-height="500px"
   >
-    <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
-
-    <v-toolbar-title>French vACC</v-toolbar-title>
-
-    <v-spacer></v-spacer>
-
-    <v-btn
-      v-for="(item, index) in items"
-      :key="index"
-      text
-      link
-      :to="item.url"
+    <v-app-bar
+      absolute
+      flat
+      color="black"
+      dark
+      height="80px"
     >
-      {{ item.title }}
-    </v-btn>
+      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-  </v-app-bar>
+      <v-toolbar-side-icon>
+        <v-img :src="logoPath" width="220px"></v-img>
+      </v-toolbar-side-icon>
+
+      <v-spacer></v-spacer>
+
+      <v-btn
+        v-for="(item, index) in items"
+        :key="index"
+        text
+        link
+        :to="item.url"
+      >
+        {{ item.title }}
+      </v-btn>
+
+    </v-app-bar>
+  </v-parallax>
 </template>
 
 <script>
@@ -36,13 +45,19 @@ export default {
         { title: "Home", url: "/" },
         { title: "ATC", url: "/atc" },
         { title: "Pilots", url: "/pilots" },
+        { title: "Discord", url: "/discord" },
+        { title: "Feedback", url: "/Feedback" },
         { title: "Login", url: "/login" },
-      ]
+      ],
+      logoPath: require('../assets/vaccfr.png'),
+      mastheadPath: require('../assets/media/banner_vacc_france.jpg'),
     }
   }
 }
 </script>
 
 <style scoped>
-
+.siteLogo {
+  background-image: url('../assets/vaccfr.png');
+}
 </style>
