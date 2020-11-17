@@ -12,6 +12,10 @@
 
       <v-spacer></v-spacer>
 
+      <span>UTC time: {{ UTCTime }}</span>
+
+      <v-spacer></v-spacer>
+
       <v-menu offset-y rounded="lg">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -41,10 +45,14 @@
         nav
         dense
       >
-        <v-list-item link>
-          <v-list-item-icon><v-icon>mdi-folder</v-icon></v-list-item-icon>
-          <v-list-item-title>My Files</v-list-item-title>
-        </v-list-item>
+        <div v-for="(section, i) in navigationDrawer" :key="i">
+          <!-- <v-list-item>{{ section.section_name }}</v-list-item> -->
+          <v-list-item link v-for="(item, j) in section.items" :key="j" :to="item.url">
+            <v-list-item-icon><v-icon>{{ item.icon }}</v-icon></v-list-item-icon>
+            <v-list-item-title>{{ item.text }}</v-list-item-title>
+          </v-list-item>
+          <v-divider></v-divider>
+        </div>
       </v-list>
     </v-navigation-drawer>
   </div>
@@ -59,7 +67,37 @@ export default {
       rightMenu: [
         { text: "Settings", icon: "mdi-cog", url: "/settings" },
         { text: "Logout", icon: "mdi-logout", url: "/logout" },
-      ]
+      ],
+      navigationDrawer: [
+        { section_name: "General", items: [
+          { text: "Library", icon: "mdi-folder", url: "/" },
+          { text: "Calendar", icon: "mdi-calendar", url: "/" },
+          { text: "My Statistics", icon: "mdi-account", url: "/" },
+          { text: "My Settings", icon: "mdi-cog", url: "/" },
+        ] },
+        {
+          section_name: "ATC", items: [
+            { text: "Roster", icon: "mdi-account-group", url: "/" },
+            { text: "Booking", icon: "mdi-clock", url: "/" },
+            { text: "Resources", icon: "mdi-clock", url: "/" },
+          ]
+        }
+      ],
+      UTCTime: ""
+    }
+  },
+  mounted() {
+    this.getUTCTime()
+  },
+  methods: {
+    getUTCTime() {
+      var today = new Date();
+      this.UTCTime = today.getUTCHours() + ":" + this.checkTime(today.getUTCMinutes()) + ":" + this.checkTime(today.getUTCSeconds()) + "z";
+      setTimeout(this.getUTCTime, 500)
+    },
+    checkTime(i) {
+      if (i < 10) {i = "0" + i}
+      return i;
     }
   }
 }
