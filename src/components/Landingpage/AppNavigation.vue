@@ -29,6 +29,12 @@
       >
         {{ item.title }}
       </v-btn>
+      <v-btn
+        text
+        @click="authAction()"
+      >
+        {{ this.getUserFullName() }}
+      </v-btn>
 
     </v-app-bar>
   </v-parallax>
@@ -53,9 +59,29 @@ export default {
         { title: "Pilots", url: "/pilots" },
         { title: "Discord", url: "/discord" },
         { title: "Feedback", url: "/Feedback" },
-        { title: "Login", url: "/login" },
       ],
       logoPath: require('../../assets/vaccfr.png'),
+    }
+  },
+  mounted() {
+
+  },
+  methods: {
+    authAction() {
+      if (localStorage.getItem('user') == undefined) {
+        this.$store.dispatch('VatsimSSO/authenticateUser')
+      } else {
+        this.$router.push({ name: 'Dashboard.index' })
+      }
+    },
+
+    getUserFullName() {
+      if (localStorage.getItem('user') == undefined) {
+        return "Login"
+      } else {
+        var userData = JSON.parse(localStorage.getItem('user'));
+        return "Welcome, " + userData.fname + " " + userData.lname;
+      }
     }
   }
 }

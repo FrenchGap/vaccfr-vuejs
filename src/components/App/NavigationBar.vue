@@ -27,7 +27,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item link v-for="(item, index) in rightMenu" :key="index" :to="item.url">
+          <v-list-item link v-for="(item, index) in rightMenu" :key="index" :to="{ name: item.name }">
             <v-list-item-title>{{item.text}}</v-list-item-title>
             <v-list-item-icon>
               <v-icon>{{item.icon}}</v-icon>
@@ -65,8 +65,8 @@ export default {
     return {
       logoPath: require('../../assets/vaccfr.png'),
       rightMenu: [
-        { text: "Settings", icon: "mdi-cog", url: "/settings" },
-        { text: "Logout", icon: "mdi-logout", url: "/logout" },
+        { text: "Settings", icon: "mdi-cog", name: "Dashboard.logout" },
+        { text: "Logout", icon: "mdi-logout", name: "Dashboard.logout" },
       ],
       navigationDrawer: [
         { section_name: "General", items: [

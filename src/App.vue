@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main transition="slide-x-transition">
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
     </v-main>
   </v-app>
 </template>

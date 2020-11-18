@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -40,22 +41,23 @@ const routes = [
         // }
       },
       {
-        path: '/login',
-        name: 'Login',
-        // component: () => import('../views/Landingpage/Home'),
-        redirect: '/app',
-      },
-      {
         path: '/logout',
-        name: 'Logout',
-        // component: () => import('../views/Landingpage/Home'),
-        redirect: '/',
+        name: 'Dashboard.logout',
+        beforeEnter: (async(to, from, next) => {
+          store.dispatch('VatsimSSO/delToken');
+          store.dispatch('User/delUser');
+          router.push({ name: "Landingpage.index" })
+          next();
+        })
       }
     ]
   },
   {
     path: '/app',
     component: () => import('../containers/Dashboard'),
+    meta: {
+      requiresAuthenticated: true,
+    },
     children: [
       {
         path: '/',
@@ -66,13 +68,27 @@ const routes = [
   },
   {
     path: '*',
-    redirect: '/'
+    redirect: { name: 'Landingpage.index' }
   }
 ]
 
 const router = new VueRouter({
   mode: 'history',
   routes
+})
+
+router.beforeEach(async(to, from, next) => {
+  if (to.query.code && to.name == "Landingpage.index") {
+    await store.dispatch('VatsimSSO/authenticateUserData', to.query.code)
+    router.push({ name: 'Landingpage.index' })
+  }
+
+  const requiresAuthenticated = to.matched.some(record => record.meta.requiresAuthenticated);
+  if (requiresAuthenticated) {
+    store.dispatch('VatsimSSO/checkAuthentication')
+  }
+
+  next();
 })
 
 export default router

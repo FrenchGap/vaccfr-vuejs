@@ -22,8 +22,8 @@ export default {
   methods: {
     newMastheadImage(link) {
       this.mastheadImageLink = link;
-    }
-  }
+    },
+  },
 };
 </script>
 
