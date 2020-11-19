@@ -26,6 +26,12 @@ export const VatsimSSO = {
     }
   },
 
+  getters: {
+    checkAuthentication() {
+      console.log('Checking Authentication')
+    }
+  },
+
   actions: {
     setToken({ commit }, token) {
       commit('SET_TOKEN', token);
@@ -52,9 +58,5 @@ export const VatsimSSO = {
         store.dispatch('User/setUser', response.data.user);
       });
     },
-
-    checkAuthentication() {
-      console.log('Checking Authentication')
-    }
   }
 }

@@ -14,9 +14,9 @@
     >
       <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
 
-      <v-toolbar-side-icon>
-        <v-img :src="logoPath" width="220px"></v-img>
-      </v-toolbar-side-icon>
+      <router-link :to="{ name: 'Landingpage.index' }">
+        <v-img :src="require('@/assets/vaccfr.png')" width="220px" />
+      </router-link>
 
       <v-spacer></v-spacer>
 
@@ -29,11 +29,21 @@
       >
         {{ item.title }}
       </v-btn>
+
       <v-btn
         text
-        @click="authAction()"
+        v-if="authenticationStatus() == 'login'"
+        @click="authenticateProcess()"
       >
-        {{ this.getUserFullName() }}
+        Login
+      </v-btn>
+      <v-btn
+        text
+        v-if="authenticationStatus() == 'authed'"
+        link
+        :to="{ name: 'Dashboard.index' }"
+      >
+        My Dashboard
       </v-btn>
 
     </v-app-bar>
@@ -60,29 +70,24 @@ export default {
         { title: "Discord", url: "/discord" },
         { title: "Feedback", url: "/Feedback" },
       ],
-      logoPath: require('../../assets/vaccfr.png'),
+      logStatus: this.authenticationStatus(),
     }
   },
   mounted() {
 
   },
   methods: {
-    authAction() {
+    authenticationStatus() {
       if (localStorage.getItem('user') == undefined) {
-        this.$store.dispatch('VatsimSSO/authenticateUser')
+        return "login";
       } else {
-        this.$router.push({ name: 'Dashboard.index' })
+        return "authed";
       }
     },
 
-    getUserFullName() {
-      if (localStorage.getItem('user') == undefined) {
-        return "Login"
-      } else {
-        var userData = JSON.parse(localStorage.getItem('user'));
-        return "Welcome, " + userData.fname + " " + userData.lname;
-      }
-    }
+    authenticateProcess() {
+      this.$store.dispatch('VatsimSSO/authenticateUser');
+    },
   }
 }
 </script>

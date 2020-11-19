@@ -58,12 +58,51 @@ const routes = [
     meta: {
       requiresAuthenticated: true,
     },
+    redirect: { name: 'Dashboard.index' },
     children: [
       {
-        path: '/',
+        path: '',
         name: 'Dashboard.index',
         component: () => import('../views/App/Index')
-      }
+      },
+      {
+        path: 'library',
+        name: 'Dashboard.library',
+      },
+      {
+        path: 'calendar',
+        name: 'Dashboard.calendar',
+      },
+      {
+        path: 'profile',
+        children: [
+          {
+            path: 'mystats',
+            name: 'Dashboard.profile.mystats',
+          },
+          {
+            path: 'mysettings',
+            name: 'Dashboard.profile.mysettings',
+          },
+        ]
+      },
+      {
+        path: 'atc',
+        children: [
+          {
+            path: 'roster',
+            name: 'Dashboard.atc.roster'
+          },
+          {
+            path: 'booking',
+            name: 'Dashboard.atc.booking'
+          },
+          {
+            path: 'resources',
+            name: 'Dashboard.atc.resources'
+          },
+        ]
+      },
     ]
   },
   {
@@ -79,13 +118,15 @@ const router = new VueRouter({
 
 router.beforeEach(async(to, from, next) => {
   if (to.query.code && to.name == "Landingpage.index") {
-    await store.dispatch('VatsimSSO/authenticateUserData', to.query.code)
-    router.push({ name: 'Landingpage.index' })
+    store.dispatch('VatsimSSO/authenticateUserData', to.query.code)
+    router.push({ name: 'Dashboard.index' })
   }
 
+  const isAuthenticated = true;
   const requiresAuthenticated = to.matched.some(record => record.meta.requiresAuthenticated);
-  if (requiresAuthenticated) {
-    store.dispatch('VatsimSSO/checkAuthentication')
+  if (requiresAuthenticated && isAuthenticated == false) {
+    store.getters.VatsimSSO.checkAuthentication
+    router.push({ name: 'Landingpage.index' })
   }
 
   next();
