@@ -119,14 +119,14 @@ const router = new VueRouter({
 router.beforeEach(async(to, from, next) => {
   if (to.query.code && to.name == "Landingpage.index") {
     store.dispatch('VatsimSSO/authenticateUserData', to.query.code)
-    router.push({ name: 'Dashboard.index' })
   }
 
-  const isAuthenticated = true;
   const requiresAuthenticated = to.matched.some(record => record.meta.requiresAuthenticated);
-  if (requiresAuthenticated && isAuthenticated == false) {
-    store.getters.VatsimSSO.checkAuthentication
-    router.push({ name: 'Landingpage.index' })
+  if (requiresAuthenticated) {
+    const isAuthenticated = store.getters['VatsimSSO/checkAuthentication'];
+    if (isAuthenticated == false) {
+      router.push({ name: 'Landingpage.index' });
+    }
   }
 
   next();

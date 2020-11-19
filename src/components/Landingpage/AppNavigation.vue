@@ -70,7 +70,6 @@ export default {
         { title: "Discord", url: "/discord" },
         { title: "Feedback", url: "/Feedback" },
       ],
-      logStatus: this.authenticationStatus(),
     }
   },
   mounted() {
