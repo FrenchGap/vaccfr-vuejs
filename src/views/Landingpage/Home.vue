@@ -36,7 +36,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in this.$store.state.VatsimData.onlineATC" :key="item">
+                  <tr v-for="item in $store.state.VatsimData.onlineATC" :key="item">
                     <td>{{ item.callsign }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.rating }}</td>
@@ -45,7 +45,7 @@
                 </tbody>
               </v-simple-table>
             </v-card-text>
-            <v-overlay opacity="100" absolute :value="loadingOnlineATC">
+            <v-overlay opacity="1" absolute :value="loadingOnlineATC">
               <v-progress-circular indeterminate white>
 
               </v-progress-circular>

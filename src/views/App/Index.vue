@@ -30,7 +30,7 @@
                 <v-card-text>
 
                 </v-card-text>
-                <v-overlay opacity="100" absolute :value="loadingProfile">
+                <v-overlay opacity="1" absolute :value="loadingProfile">
                   <v-progress-circular indeterminate white>
 
                   </v-progress-circular>
