@@ -70,15 +70,14 @@ export const VatsimSSO = {
       window.location = url;
     },
 
-    authenticateData({ commit }, code) {
+    async authenticateData({ commit }, code) {
       store.dispatch('AppState/setLoading', true);
       var params = {
         'code': code,
         'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
       };
-      Axios.post(process.env.VUE_APP_API_URL + '/authenticate', params)
+      return Axios.post(process.env.VUE_APP_API_URL + '/authenticate', params)
       .then((response) => {
-        console.log(response.data)
         commit('SET_TOKEN', response.data.token)
         store.dispatch('User/setUser', response.data.user);
         store.dispatch('AppState/setLoading', false);

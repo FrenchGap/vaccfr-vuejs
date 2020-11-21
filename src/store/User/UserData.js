@@ -30,21 +30,24 @@ export const UserData = {
   },
 
   getters: {
-    getFullName() {
+    async getFullName() {
       if (store.state.fname == null) {
-        return null;
+        store.getters['User/fetchUserData']
+        .then(() => {
+          return store.state.fname + " " + store.state.lname;
+        });
       } else {
         return store.state.fname + " " + store.state.lname;
       }
     },
 
-    fetchUserData() {
+    async fetchUserData() {
       store.dispatch('AppState/setLoading', true);
       var params = {
         'api_token': localStorage.getItem('token'),
         'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
       };
-      Axios.get(process.env.VUE_APP_API_URL + '/user', {
+      return Axios.get(process.env.VUE_APP_API_URL + '/user', {
         params: params
       })
       .then((response) => {

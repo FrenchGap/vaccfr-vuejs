@@ -65,7 +65,7 @@ const routes = [
       },
       {
         path: 'ssologin',
-        beforeEnter: (to, from, next) => {
+        beforeEnter: async(to, from, next) => {
           if (to.query.code) {
             store.dispatch('VatsimSSO/authenticateData', to.query.code)
           }
@@ -87,7 +87,7 @@ const routes = [
     component: () => import('../containers/Dashboard'),
     meta: {
       requiresAuthenticated: true,
-      title: "French vACC - App",
+      title: `French vACC - App`,
     },
     redirect: { name: 'Dashboard.index' },
     children: [
