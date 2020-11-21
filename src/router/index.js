@@ -18,30 +18,39 @@ const routes = [
         component: () => import('../views/Landingpage/Home'),
       },
       {
-        path: '/atc',
+        path: 'atc',
         name: 'Landingpage.ATC',
         component: () => import('../views/Landingpage/ATC'),
       },
       {
-        path: '/pilots',
+        path: 'pilots',
         name: 'Landingpage.Pilots',
         component: () => import('../views/Landingpage/Home'),
       },
       {
-        path: '/feedback',
+        path: 'feedback',
         name: 'Landingpage.Feedback',
         component: () => import('../views/Landingpage/Feedback'),
       },
       {
-        path: '/contact',
+        path: 'contact',
         name: 'Landingpage.Contact',
         component: () => import('../views/Landingpage/Home'),
       },
       {
-        path: '/discord',
+        path: 'discord',
         // beforeEnter() {
         //   window.location = "https://vatsim.fr/discord";
         // }
+      },
+      {
+        path: 'policies',
+        name: 'Landingpage.policies',
+        component: () => import('../views/Landingpage/Policies')
+      },
+      {
+        path: 'contact',
+        name: 'Landingpage.contact',
       },
       {
         path: 'login',

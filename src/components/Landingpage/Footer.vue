@@ -14,7 +14,7 @@
         text
         rounded
         class="my-2"
-        :to="link.url"
+        :to="{ name: link.name }"
       >
         {{ link.text }}
       </v-btn>
@@ -34,9 +34,9 @@ export default {
   data() {
     return {
       links: [
-        { text: "Circulars", url: "/policies" },
-        { text: "Privacy Policy", url: "/policies/privacy" },
-        { text: "Staff roster", url: "/app/staff" },
+        { text: "Policies", name: "Landingpage.policies" },
+        { text: "Staff roster", name: "Dashboard.index" },
+        { text: "Contact", name: "Landingpage.contact" },
       ]
     }
   }
