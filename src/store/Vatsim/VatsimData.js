@@ -6,18 +6,24 @@ export const VatsimData = {
 
   state: {
     onlineATC: {},
-    onlineATCLastUpdated: 0,
+    onlineATCLastUpdated: "--:--z",
   },
 
   mutations: {
     SET_ONLINEATC(state, data) {
       state.onlineATC = data;
-      state.onlineATCLastUpdated = new Date().getTime();
+      var t = new Date();
+      state.onlineATCLastUpdated = `${t.getUTCHours()}:${t.getUTCMinutes()}z`;
     }
   },
 
   getters: {
-    
+    getOnlineATCList(state) {
+      return state.onlineATC;
+    },
+    getOnlineATCListUpdateTime(state) {
+      return state.onlineATCLastUpdated;
+    }
   },
 
   actions: {
@@ -25,23 +31,17 @@ export const VatsimData = {
       commit('SET_ONLINEATC', data);
     },
 
-    updateOnlineATC() {
-      store.dispatch('AppState/setLoading', true);
+    async updateOnlineATC() {
       var params = {
         'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
       };
-      Axios.get(process.env.VUE_APP_API_URL + '/vatsimdata/onlineatc', {
+      return Axios.get(process.env.VUE_APP_API_URL + '/vatsimdata/onlineatc', {
         params: params
       })
       .then((response) => {
         store.dispatch('VatsimData/setOnlineATC', response.data.data);
-        store.dispatch('AppState/setLoading', false);
-        return response.data.data;
       })
-      .catch(() => {
-        store.dispatch('AppState/setLoading', false);
-        return {};
-      });
+      .catch(() => {});
     }
   },
 }

@@ -24,7 +24,7 @@
             :loading="false"
           >
             <v-card-title>Online ATC</v-card-title>
-            <v-card-subtitle>(Last updated: 19:20z)</v-card-subtitle>
+            <v-card-subtitle>(Last updated: {{lastUpdatedATCTimestamp}})</v-card-subtitle>
             <v-card-text>
               <v-simple-table>
                 <thead>
@@ -36,7 +36,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in $store.state.VatsimData.onlineATC" :key="item">
+                  <tr v-for="(item, index) in onlineATCList" :key="index">
                     <td>{{ item.callsign }}</td>
                     <td>{{ item.name }}</td>
                     <td>{{ item.rating }}</td>
@@ -90,7 +90,9 @@ export default {
   name: 'Home',
   data() {
     return {
+      onlineATCList: {},
       loadingOnlineATC: true,
+      lastUpdatedATCTimestamp: "--:--z",
     }
   },
   mounted() {
@@ -98,12 +100,14 @@ export default {
     this.fetchOnlineATC();
   },
   methods: {
-    fetchOnlineATC() {
-      if (new Date().getTime() - 160 > this.$store.state.VatsimData.onlineATCLastUpdated) {
-        this.$store.dispatch('VatsimData/updateOnlineATC');
-      }
-      this.loadingOnlineATC = false;
-    }
+    async fetchOnlineATC() {
+      this.onlineATCList = this.$store.dispatch('VatsimData/updateOnlineATC')
+      .then(() => {
+        this.onlineATCList = this.$store.getters['VatsimData/getOnlineATCList'];
+        this.lastUpdatedATCTimestamp = this.$store.getters['VatsimData/getOnlineATCListUpdateTime'];
+        this.loadingOnlineATC = false;
+      });
+    },
   }
 }
 </script>

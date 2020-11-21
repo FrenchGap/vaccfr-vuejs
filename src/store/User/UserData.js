@@ -8,7 +8,8 @@ export const UserData = {
     fname: null,
     lname: null,
     vatsim_id: null,
-    rank: null,
+    ATCrank: null,
+    user: {},
   },
 
   mutations: {
@@ -16,26 +17,21 @@ export const UserData = {
       state.fname = user.fname;
       state.lname = user.lname;
       state.vatsim_id = user.vatsim_id;
-      state.rank = user.atc_rating_short;
-      localStorage.setItem('user', JSON.stringify(user));
+      state.ATCrank = user.atc_rating_short;
+      state.user = user.user;
     },
     DEL_USER(state) {
       state.fname = null;
       state.lname = null;
       state.vatsim_id = null;
-      state.rank = null;
-      localStorage.removeItem('user');
+      state.ATCrank = null;
+      state.user = {};
     }
   },
 
   getters: {
     getFullName() {
       if (store.state.fname == null) {
-        if (localStorage.getItem('user') !== null) {
-          var userdata = JSON.parse(localStorage.getItem('user'))
-          store.dispatch('User/setUser', userdata);
-          return store.state.fname + " " + store.state.lname;
-        }
         return null;
       } else {
         return store.state.fname + " " + store.state.lname;
