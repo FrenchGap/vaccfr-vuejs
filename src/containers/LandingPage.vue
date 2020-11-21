@@ -5,18 +5,29 @@
       <router-view @mastHeadRequired="newMastheadImage"></router-view>
     </v-main>
     <AppFooter />
+    <v-overlay
+      :value="$store.state.AppState.loadingContent"
+      opacity="0.8"
+    >
+      <v-progress-circular
+        indeterminate
+        color="white"
+        size="100"
+        width="5"
+      ></v-progress-circular>
+    </v-overlay>
   </v-app>
 </template>
 
 <script>
-import AppNavigation from '../components/Landingpage/AppNavigation.vue';
-import AppFooter from '../components/Landingpage/Footer.vue';
+import AppNavigation from '@/components/Landingpage/AppNavigation.vue';
+import AppFooter from '@/components/Landingpage/Footer.vue';
 export default {
   components: { AppNavigation, AppFooter },
   name: 'LandingPageContainer',
   data() {
     return {
-      mastheadImageLink: require('../assets/media/banner_vacc_france.jpg')
+      mastheadImageLink: require('@/assets/media/banner_vacc_france.jpg')
     }
   },
   methods: {

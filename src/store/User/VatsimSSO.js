@@ -7,23 +7,19 @@ export const VatsimSSO = {
   namespaced: true,
 
   state: {
-    access_token: null,
-    code: null,
+    token: null,
     authenticated: false,
   },
 
   mutations: {
     SET_TOKEN(state, token) {
-      state.access_token = token;
+      state.token = token;
       state.authenticated = true;
-      localStorage.setItem('access_token', token);
+      localStorage.setItem('token', token);
     },
     DEL_TOKEN(state) {
-      state.access_token = null;
-      localStorage.removeItem('access_token');
-    },
-    SET_CODE(state, code) {
-      state.code = code;
+      state.token = null;
+      localStorage.removeItem('token');
     },
     SET_AUTHENTICATED(state) {
       state.authenticated = true;
@@ -34,77 +30,76 @@ export const VatsimSSO = {
   },
 
   getters: {
-    checkAuthentication(state) {
-      console.log('Checking Authentication')
-      var checkThisToken = "";
-
-      if (state.authenticated == true) {
+    getAuthenticationState() {
+      if (store.state.authenticated == true) {
         return true;
-      }
-
-      var localToken = localStorage.getItem('access_token');
-      if (localToken !== null) {
-        checkThisToken = localToken;
-      } else if (state.access_token !== null) {
-        checkThisToken = state.access_token;
+      } else if (localStorage.getItem('token')) {
+        var tokenToCheck = localStorage.getItem('token');
+        store.dispatch('AppState/setLoading', true);
+        console.log('There is a token');
+        var params = {
+          'api_token': tokenToCheck,
+          'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
+        };
+        Axios.post(process.env.VUE_APP_API_URL + '/checkToken', params)
+        .then((response) => {
+          store.dispatch('AppState/setLoading', false);
+          if (response.status == 200) {
+            console.log('User is authenticated');
+            store.dispatch('VatsimSSO/setToken', tokenToCheck);
+            store.dispatch('VatsimSSO/setAuthenticated');
+            store.dispatch('AppState/setLoading', false);
+            return true;
+          }
+        })
+        .catch(() => {
+          console.log('User is NOT authenticated');
+          store.dispatch('AppState/setLoading', false);
+          return false;
+        });
       } else {
         return false;
       }
-
-      Axios.get(process.env.VUE_APP_API_URL + '/checkToken', {
-        params: {
-          api_token: checkThisToken,
-          app_auth_token: process.env.VUE_APP_FRONTEND_KEY
-        }
-      })
-      .then(function (response) {
-        console.log(response.status);
-        store.dispatch('VatsimSSO/setAuthenticated');
-        return true;
-      })
-      .catch(function (error) {
-        console.log(error.response.status);
-        return false;
-      });
-
-      return false;
     }
   },
 
   actions: {
-    setToken({ commit }, token) {
-      commit('SET_TOKEN', token);
+    authenticateUser() {
+      store.dispatch('AppState/setLoading', true);
+      var url = `${process.env.VUE_APP_VATSIMSSO_URL}?response_type=code&scope=full_name vatsim_details email&client_id=${process.env.VUE_APP_VATSIMSSO_ID}&redirect_uri=${process.env.VUE_APP_BASEURL}/ssologin`;
+      window.location = url;
     },
 
-    delToken({ commit }) {
-      commit('DEL_TOKEN');
+    authenticateData({ commit }, code) {
+      store.dispatch('AppState/setLoading', true);
+      var params = {
+        'code': code,
+        'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
+      };
+      Axios.post(process.env.VUE_APP_API_URL + '/authenticate', params)
+      .then((response) => {
+        console.log(response.data)
+        commit('SET_TOKEN', response.data.token)
+        store.dispatch('User/setUser', response.data.user);
+        store.dispatch('AppState/setLoading', false);
+      });
+    },
+
+    setToken({ commit }, value) {
+      commit('SET_TOKEN', value);
     },
 
     setAuthenticated({ commit }) {
       commit('SET_AUTHENTICATED');
     },
 
-    delAuthenticated({ commit }) {
+    logoutUser({ commit }) {
+      store.dispatch('AppState/setLoading', true);
+      // add route here to invalidate the token server-side
+      commit('DEL_TOKEN');
       commit('DEL_AUTHENTICATED');
-    },
-
-    authenticateUser() {
-      console.log('Authenticating');
-      var url = process.env.VUE_APP_VATSIMSSO_URL + '?response_type=code&scope=full_name vatsim_details email&client_id=' + process.env.VUE_APP_VATSIMSSO_ID + '&redirect_uri=' + process.env.VUE_APP_ROOT_URL;
-      window.location = url;
-    },
-
-    authenticateUserData({ commit }, code) {
-      var params = {
-        'code': code,
-        'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
-      };
-      commit('SET_CODE', code)
-      Axios.post(process.env.VUE_APP_API_URL + '/authenticate', params)
-      .then((response) => {
-        store.dispatch('VatsimSSO/setToken', response.data.token);
-        store.dispatch('User/setUser', response.data.user);
-      });
-    },
+      store.dispatch('User/delUser');
+      store.dispatch('AppState/setLoading', false);
+    }
   }
 }

@@ -8,6 +8,9 @@ const routes = [
   {
     path: '/',
     component: () => import('../containers/LandingPage'),
+    meta: {
+      title: "French vACC"
+    },
     children: [
       {
         path: '/',
@@ -41,13 +44,31 @@ const routes = [
         // }
       },
       {
-        path: '/logout',
-        name: 'Dashboard.logout',
+        path: 'login',
+        name: 'login',
+        beforeEnter: (to, from, next) => {
+          store.dispatch('VatsimSSO/authenticateUser');
+          if (from.name !== null) {
+            return next({ name: from.name });
+          }
+          next({ name: 'Landingpage.index' });
+        },
+      },
+      {
+        path: 'ssologin',
+        beforeEnter: (to, from, next) => {
+          if (to.query.code) {
+            store.dispatch('VatsimSSO/authenticateData', to.query.code)
+          }
+          next({ name: 'Landingpage.index' });
+        },
+      },
+      {
+        path: 'logout',
+        name: 'logout',
         beforeEnter: (async(to, from, next) => {
-          store.dispatch('VatsimSSO/delToken');
-          store.dispatch('User/delUser');
-          router.push({ name: "Landingpage.index" })
-          next();
+          store.dispatch('VatsimSSO/logoutUser');
+          next({ name: "Landingpage.index" });
         })
       }
     ]
@@ -57,6 +78,7 @@ const routes = [
     component: () => import('../containers/Dashboard'),
     meta: {
       requiresAuthenticated: true,
+      title: "French vACC - App",
     },
     redirect: { name: 'Dashboard.index' },
     children: [
@@ -117,15 +139,29 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async(to, from, next) => {
-  if (to.query.code && to.name == "Landingpage.index") {
-    store.dispatch('VatsimSSO/authenticateUserData', to.query.code)
+  // Checks if loader is stuck
+  if (!localStorage.getItem('loadingContent') && store.state.AppState.loadingContent == true) {
+    store.dispatch('AppState/setLoading');
   }
 
+  // Checks if VUEX data is dead but still authenticated
+  if (store.state.VatsimSSO.authenticated == false && localStorage.getItem('token')) {
+    var fetchedUserDataState = store.getters['User/fetchUserData'];
+    if (fetchedUserDataState) {
+      next();
+    }
+  }
+
+  // Set route titles from meta tags
+  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+  if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
+
   const requiresAuthenticated = to.matched.some(record => record.meta.requiresAuthenticated);
-  if (requiresAuthenticated) {
-    const isAuthenticated = store.getters['VatsimSSO/checkAuthentication'];
+  if (requiresAuthenticated && store.state.VatsimSSO.authenticated == false) {
+    var isAuthenticated = store.getters['VatsimSSO/getAuthenticationState'];
     if (isAuthenticated == false) {
-      router.push({ name: 'Landingpage.index' });
+      store.dispatch('VatsimSSO/logoutUser');
+      next({ name: 'Landingpage.index' });
     }
   }
 

@@ -65,7 +65,7 @@ export default {
     return {
       rightMenu: [
         { text: "Settings", icon: "mdi-cog", name: "Landingpage.index" },
-        { text: "Logout", icon: "mdi-logout", name: "Dashboard.logout" },
+        { text: "Logout", icon: "mdi-logout", name: "logout" },
       ],
       navigationDrawer: [
         { section_name: "General", items: [

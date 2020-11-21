@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { AppState } from './General/AppState'
 import { UserData } from './User/UserData'
 import { VatsimSSO } from './User/VatsimSSO'
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
+    AppState: AppState,
     User: UserData,
     VatsimSSO: VatsimSSO
   }

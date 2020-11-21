@@ -32,18 +32,19 @@
 
       <v-btn
         text
-        v-if="authenticationStatus() == 'login'"
-        @click="authenticateProcess()"
+        link
+        v-if="$store.state.VatsimSSO.authenticated == false"
+        :to="{ name: 'login' }"
       >
         Login
       </v-btn>
       <v-btn
         text
-        v-if="authenticationStatus() == 'authed'"
         link
+        v-if="$store.state.VatsimSSO.authenticated == true"
         :to="{ name: 'Dashboard.index' }"
       >
-        My Dashboard
+        {{$store.state.User.fname}} {{$store.state.User.lname}}
       </v-btn>
 
     </v-app-bar>
@@ -56,7 +57,7 @@ export default {
   props: {
     mastheadPath: {
       required: true,
-      default: require('../../assets/media/banner_vacc_france.jpg')
+      default: require('@/assets/media/banner_vacc_france.jpg')
     }
   },
   data () {
@@ -76,17 +77,7 @@ export default {
 
   },
   methods: {
-    authenticationStatus() {
-      if (localStorage.getItem('user') == undefined) {
-        return "login";
-      } else {
-        return "authed";
-      }
-    },
 
-    authenticateProcess() {
-      this.$store.dispatch('VatsimSSO/authenticateUser');
-    },
   }
 }
 </script>

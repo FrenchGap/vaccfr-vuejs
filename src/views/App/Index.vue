@@ -60,7 +60,7 @@ export default {
   },
   methods: {
     getUserFullName() {
-      var username = this.$store.getters['User/getFullName']
+      var username = `${this.$store.state.User.fname} ${this.$store.state.User.lname}`
       if (username != null) {
         this.loadingProfile = false
       }

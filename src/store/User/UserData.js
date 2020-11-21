@@ -1,3 +1,4 @@
+import Axios from "axios";
 import store from "..";
 
 export const UserData = {
@@ -28,18 +29,40 @@ export const UserData = {
   },
 
   getters: {
-    getFullName(state) {
-      if (state.fname == null) {
+    getFullName() {
+      if (store.state.fname == null) {
         if (localStorage.getItem('user') !== null) {
           var userdata = JSON.parse(localStorage.getItem('user'))
           store.dispatch('User/setUser', userdata);
-          return state.fname + " " + state.lname;
+          return store.state.fname + " " + store.state.lname;
         }
         return null;
       } else {
-        return state.fname + " " + state.lname;
+        return store.state.fname + " " + store.state.lname;
       }
     },
+
+    fetchUserData() {
+      store.dispatch('AppState/setLoading', true);
+      var params = {
+        'api_token': localStorage.getItem('token'),
+        'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
+      };
+      Axios.get(process.env.VUE_APP_API_URL + '/user', {
+        params: params
+      })
+      .then((response) => {
+        store.dispatch('User/setUser', response.data.user);
+        store.dispatch('AppState/setLoading', false);
+        return true;
+      })
+      .catch(() => {
+        console.log('User is NOT authenticated');
+        store.dispatch('VatsimSSO/logoutUser');
+        store.dispatch('AppState/setLoading', false);
+        return false;
+      });
+    }
   },
 
   actions: {
