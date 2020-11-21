@@ -2,3 +2,8 @@ https://vuedev.vatsim.fr {
     root * /var/www/vuedev/dist
     file_server
 }
+
+rewrite {
+    regexp .*
+    to {path} /
+}
