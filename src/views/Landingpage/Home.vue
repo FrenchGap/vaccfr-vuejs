@@ -21,12 +21,11 @@
         <v-col cols="6">
           <v-card
             elevation="3"
-            :loading="false"
           >
             <v-card-title>Online ATC</v-card-title>
             <v-card-subtitle>(Last updated: {{lastUpdatedATCTimestamp}})</v-card-subtitle>
             <v-card-text>
-              <v-simple-table>
+              <v-simple-table v-if="onlineATCList.length > 0">
                 <thead>
                   <tr>
                     <th>Position</th>
@@ -44,6 +43,16 @@
                   </tr>
                 </tbody>
               </v-simple-table>
+              <v-alert
+                color="warning"
+                outlined
+                border="left"
+                icon="mdi-radar"
+                dense
+                :v-if="onlineATCList.length == 0"
+              >
+                There is no ATC online at this time
+              </v-alert>
             </v-card-text>
             <v-overlay opacity="1" absolute :value="loadingOnlineATC">
               <v-progress-circular indeterminate white>
@@ -57,9 +66,9 @@
             elevation="3"
           >
             <v-card-title>ATC Booking</v-card-title>
-            <v-card-subtitle>Monday 16th of Novembre</v-card-subtitle>
+            <v-card-subtitle>{{getCurrentDate()}}</v-card-subtitle>
             <v-card-text>
-              <v-simple-table>
+              <v-simple-table v-if="bookingsList.length > 0">
                 <thead>
                   <tr>
                     <th>Position</th>
@@ -69,15 +78,30 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>x</td>
-                    <td>x</td>
+                  <tr v-for="(item, index) in bookingsList" :key="index">
+                    <td>{{ item.callsign }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.time }}</td>
+                    <td>{{ item.rating }}</td>
                   </tr>
                 </tbody>
               </v-simple-table>
+              <v-alert
+                color="warning"
+                outlined
+                border="left"
+                icon="mdi-calendar-search"
+                dense
+                :v-if="bookingsList.length == 0"
+              >
+                There are no bookings found
+              </v-alert>
             </v-card-text>
+            <v-overlay opacity="1" absolute :value="loadingBookings">
+              <v-progress-circular indeterminate white>
+
+              </v-progress-circular>
+            </v-overlay>
           </v-card>
         </v-col>
       </v-row>
@@ -93,11 +117,14 @@ export default {
       onlineATCList: {},
       loadingOnlineATC: true,
       lastUpdatedATCTimestamp: "--:--z",
+      bookingsList: {},
+      loadingBookings: true,
     }
   },
   mounted() {
     this.$emit('mastHeadRequired', require('@/assets/media/banner_vacc_france.jpg'));
     this.fetchOnlineATC();
+    this.fetchBookings();
   },
   methods: {
     async fetchOnlineATC() {
@@ -108,6 +135,16 @@ export default {
         this.loadingOnlineATC = false;
       });
     },
+    async fetchBookings() {
+      this.loadingBookings = false;
+    },
+    getCurrentDate() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      return dd + '/' + mm + '/' + yyyy;
+    }
   }
 }
 </script>
