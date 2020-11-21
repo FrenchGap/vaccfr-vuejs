@@ -2,7 +2,7 @@
   <v-layout fill-height>
     <v-container>
       <v-row>
-        <v-col cols="8">
+        <v-col cols="12">
           <v-row>
             <v-col cols="12">
               <v-card
@@ -16,99 +16,69 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="4">
-          <v-row>
-            <v-col cols="12">
-              <v-card
-                elevation="3"
-                :loading="false"
-              >
-                <v-card-title>Online ATC</v-card-title>
-                <v-card-subtitle>(Last updated: 19:20z)</v-card-subtitle>
-                <v-card-text>
-                  <v-simple-table>
-                    <thead>
-                      <tr>
-                        <th>Position</th>
-                        <th>Name</th>
-                        <th>Rating</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>LFFF_CTR</td>
-                        <td>François-Xavier</td>
-                        <td>C1</td>
-                      </tr>
-                      <tr>
-                        <td>LFPG_TWR</td>
-                        <td>Mohammed</td>
-                        <td>S2</td>
-                      </tr>
-                      <tr>
-                        <td>LFMM_CTR</td>
-                        <td>Florian</td>
-                        <td>C1</td>
-                      </tr>
-                      <tr>
-                        <td>LFBD_APP</td>
-                        <td>Loic</td>
-                        <td>S2</td>
-                      </tr>
-                    </tbody>
-                  </v-simple-table>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12">
-              <v-card
-                elevation="3"
-              >
-                <v-card-title>ATC Booking</v-card-title>
-                <v-card-subtitle>Monday 16th of Novembre</v-card-subtitle>
-                <v-card-text>
-                  <v-simple-table>
-                    <thead>
-                      <tr>
-                        <th>Position</th>
-                        <th>Name</th>
-                        <th>Time</th>
-                        <th>Rating</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>LFFF_CTR</td>
-                        <td>François-Xavier</td>
-                        <td>19:00z - 21:00z</td>
-                        <td>C1</td>
-                      </tr>
-                      <tr>
-                        <td>LFPG_TWR</td>
-                        <td>Mohammed</td>
-                        <td>19:00z - 21:00z</td>
-                        <td>S2</td>
-                      </tr>
-                      <tr>
-                        <td>LFMM_CTR</td>
-                        <td>Florian</td>
-                        <td>19:00z - 21:00z</td>
-                        <td>C1</td>
-                      </tr>
-                      <tr>
-                        <td>LFBD_APP</td>
-                        <td>Loic</td>
-                        <td>19:00z - 21:00z</td>
-                        <td>S2</td>
-                      </tr>
-                    </tbody>
-                  </v-simple-table>
-                </v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
+      </v-row>
+      <v-row>
+        <v-col cols="6">
+          <v-card
+            elevation="3"
+            :loading="false"
+          >
+            <v-card-title>Online ATC</v-card-title>
+            <v-card-subtitle>(Last updated: 19:20z)</v-card-subtitle>
+            <v-card-text>
+              <v-simple-table>
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Online since</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="item in this.$store.state.VatsimData.onlineATC" :key="item">
+                    <td>{{ item.callsign }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.rating }}</td>
+                    <td>{{ item.livesince }}</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-card-text>
+            <v-overlay opacity="100" absolute :value="loadingOnlineATC">
+              <v-progress-circular indeterminate white>
+
+              </v-progress-circular>
+            </v-overlay>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card
+            elevation="3"
+          >
+            <v-card-title>ATC Booking</v-card-title>
+            <v-card-subtitle>Monday 16th of Novembre</v-card-subtitle>
+            <v-card-text>
+              <v-simple-table>
+                <thead>
+                  <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                    <th>Time</th>
+                    <th>Rating</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>x</td>
+                    <td>x</td>
+                    <td>x</td>
+                    <td>x</td>
+                  </tr>
+                </tbody>
+              </v-simple-table>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -120,12 +90,21 @@ export default {
   name: 'Home',
   data() {
     return {
-      
+      loadingOnlineATC: true,
     }
   },
   mounted() {
-    this.$emit('mastHeadRequired', require('../../assets/media/banner_vacc_france.jpg'));
+    this.$emit('mastHeadRequired', require('@/assets/media/banner_vacc_france.jpg'));
+    this.fetchOnlineATC();
   },
+  methods: {
+    fetchOnlineATC() {
+      if (new Date().getTime() - 160 > this.$store.state.VatsimData.onlineATCLastUpdated) {
+        this.$store.dispatch('VatsimData/updateOnlineATC');
+      }
+      this.loadingOnlineATC = false;
+    }
+  }
 }
 </script>
 
