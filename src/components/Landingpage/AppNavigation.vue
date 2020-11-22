@@ -27,6 +27,7 @@
         link
         :to="{ name: item.name }"
         exact
+        class="d-none d-md-flex"
       >
         {{ item.title }}
       </v-btn>
@@ -38,17 +39,59 @@
         link
         v-if="$store.state.VatsimSSO.authenticated == false"
         :to="{ name: 'login' }"
+        class="d-none d-md-flex"
       >
-        Login
+        SSO Login
       </v-btn>
       <v-btn
         text
         link
         v-if="$store.state.VatsimSSO.authenticated == true"
         :to="{ name: 'Dashboard.index' }"
+        class="d-none d-md-flex"
       >
         {{$store.state.User.fname}} {{$store.state.User.lname}}
       </v-btn>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            icon
+            dark
+            v-bind="attrs"
+            v-on="on"
+            class="d-xs d-md-none"
+          >
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in items"
+            :key="index"
+            link
+            :to="{ name: item.name }"
+            exact
+          >
+            <v-list-item-title>{{item.title}}</v-list-item-title>
+          </v-list-item>
+          <v-divider></v-divider>
+          <v-list-item
+            link
+            v-if="$store.state.VatsimSSO.authenticated == false"
+            :to="{ name: 'login' }"
+          >
+            <v-list-item-title>SSO Login</v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            link
+            v-if="$store.state.VatsimSSO.authenticated == true"
+            :to="{ name: 'Dashboard.index' }"
+          >
+            <v-list-item-title>{{$store.state.User.fname}} {{$store.state.User.lname}}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
     </v-app-bar>
   </v-parallax>
