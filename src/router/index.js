@@ -25,7 +25,7 @@ const routes = [
       {
         path: 'pilots',
         name: 'Landingpage.pilots',
-        component: () => import('../views/Landingpage/Home'),
+        component: () => import('../views/Landingpage/Pilots'),
       },
       {
         path: 'feedback',
@@ -35,7 +35,7 @@ const routes = [
       {
         path: 'contact',
         name: 'Landingpage.contact',
-        component: () => import('../views/Landingpage/Home'),
+        component: () => import('../views/Landingpage/Contact'),
       },
       {
         path: 'discord',

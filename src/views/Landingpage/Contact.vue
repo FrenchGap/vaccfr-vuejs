@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "Pilots"
+  name: "Contact"
 }
 </script>
 
