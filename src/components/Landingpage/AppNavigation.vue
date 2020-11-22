@@ -56,21 +56,32 @@
       <v-menu offset-y>
         <template v-slot:activator="{ attrs, on }">
           <v-btn
-            color="primary"
             dark
             v-bind="attrs"
             v-on="on"
           >
-            {{$i18n.locale}}
+            <v-img
+              :src="require(`@/assets/localesFlags/${$i18n.locale}-flag.png`)"
+              height="28px"
+              width="28px"
+            >
+            </v-img>
           </v-btn>
         </template>
-        <v-list>
+        <v-list dark>
           <v-list-item
             v-for="locale in localesList"
             :key="locale"
             @click="setLocale(locale)"
           >
-            <v-list-item-title>{{locale}}</v-list-item-title>
+            <v-list-item-title>
+              <v-img
+                :src="require(`@/assets/localesFlags/${locale}-flag.png`)"
+                height="28px"
+                width="28px"
+              >
+              </v-img>
+            </v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
