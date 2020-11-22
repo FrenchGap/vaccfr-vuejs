@@ -1,5 +1,5 @@
 <template>
-  <v-layout fill-height >
+  <v-layout fill-height>
     <v-container fluid>
       <v-row>
         <v-col cols="12" md="3">
@@ -12,6 +12,16 @@
             </v-col>
           </v-row>
         </v-col>
+        <v-col cols="12" md="5">
+          <v-row>
+            <v-col cols="12">
+              <EventsCarousel />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12" md="4">
+
+        </v-col>
       </v-row>
     </v-container>
   </v-layout>
@@ -20,11 +30,13 @@
 <script>
 import UserProfileCard from '../../components/App/User/UserProfileCard.vue';
 import StatsCard from '../../components/App/User/StatsCard.vue';
+import EventsCarousel from '../../components/App/Feeds/EventsCarousel.vue';
 
 export default {
   components: {
     UserProfileCard,
-    StatsCard
+    StatsCard,
+    EventsCarousel
   },
   name: "DashboardIndex",
   data() {
