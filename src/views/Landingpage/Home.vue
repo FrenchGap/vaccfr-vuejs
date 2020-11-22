@@ -18,7 +18,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6">
+        <v-col sm="12" md="6">
           <v-card
             elevation="3"
           >
@@ -61,7 +61,7 @@
             </v-overlay>
           </v-card>
         </v-col>
-        <v-col cols="6">
+        <v-col sm="12" md="6">
           <v-card
             elevation="3"
           >

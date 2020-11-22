@@ -2,7 +2,7 @@
   <v-layout fill-height >
     <v-container fluid>
       <v-row>
-        <v-col cols="3">
+        <v-col sm="12" md="3">
           <v-row>
             <v-col cols="12">
               <UserProfileCard />

@@ -4,16 +4,19 @@
     <v-main transition="slide-x-transition" class="pt-0 pl-5">
       <router-view @pageTitleValue="setPageTitle" />
     </v-main>
+    <Footer />
   </v-app>
 </template>
 
 <script>
 import NavigationBar from "../components/App/NavigationBar";
+import Footer from "../components/App/Footer";
 
 export default {
   name: "DashboardContainer",
   components: {
-    NavigationBar
+    NavigationBar,
+    Footer,
   },
   data() {
     return {
