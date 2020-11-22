@@ -9,7 +9,7 @@
     </v-system-bar>
     <v-carousel
       cycle
-      interval="3000"
+      :interval="cycleInterval"
       height="350"
       show-arrows-on-hover
       delimiter-icon="mdi-circle-medium"
@@ -55,6 +55,11 @@
 <script>
 export default {
   name: "EventsCarousel",
+  props: {
+    cycleInterval: {
+      required: true
+    }
+  },
   data() {
     return {
       loadingNews: true,

@@ -15,7 +15,7 @@
         <v-col cols="12" md="5">
           <v-row>
             <v-col cols="12">
-              <EventsCarousel />
+              <EventsCarousel cycleInterval="6000" />
             </v-col>
           </v-row>
         </v-col>
