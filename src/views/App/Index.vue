@@ -7,6 +7,9 @@
             <v-col cols="12">
               <UserProfileCard />
             </v-col>
+            <v-col cols="12">
+              <StatsCard />
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -16,8 +19,13 @@
 
 <script>
 import UserProfileCard from '../../components/App/User/UserProfileCard.vue';
+import StatsCard from '../../components/App/User/StatsCard.vue';
+
 export default {
-  components: { UserProfileCard },
+  components: {
+    UserProfileCard,
+    StatsCard
+  },
   name: "DashboardIndex",
   data() {
     return {

@@ -102,7 +102,7 @@ export default {
   data() {
     return {
       rightMenu: [
-        { text: "Settings", icon: "mdi-cog", name: "Landingpage.index" },
+        { text: "Profile", icon: "mdi-account", name: "Dashboard.profile" },
         { text: "Logout", icon: "mdi-logout", name: "logout" },
       ],
       rightMenuDrawer: false,
@@ -111,8 +111,7 @@ export default {
           { text: "Home", icon: "mdi-home", name: "Dashboard.index" },
           { text: "Library", icon: "mdi-book", name: "Dashboard.library" },
           { text: "Calendar", icon: "mdi-calendar", name: "Dashboard.calendar" },
-          { text: "My Statistics", icon: "mdi-account", name: "Dashboard.profile.mystats" },
-          { text: "My Settings", icon: "mdi-cog", name: "Dashboard.profile.mysettings" },
+          { text: "My Profile", icon: "mdi-account", name: "Dashboard.profile" },
         ] },
         {
           section_name: "ATC", items: [

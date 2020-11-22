@@ -104,16 +104,7 @@ const routes = [
       },
       {
         path: 'profile',
-        children: [
-          {
-            path: 'mystats',
-            name: 'Dashboard.profile.mystats',
-          },
-          {
-            path: 'mysettings',
-            name: 'Dashboard.profile.mysettings',
-          },
-        ]
+        name: 'Dashboard.profile',
       },
       {
         path: 'atc',

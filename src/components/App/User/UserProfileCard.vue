@@ -42,8 +42,13 @@
       </v-simple-table>
     </v-card-text>
     <v-overlay opacity="1" absolute :value="loadingProfile">
-      <v-progress-circular indeterminate white>
-
+      <v-progress-circular
+        indeterminate
+        white
+        size="100"
+        width="3"
+      >
+        Profile
       </v-progress-circular>
     </v-overlay>
   </v-card>
@@ -61,7 +66,7 @@ export default {
     }
   },
   mounted() {
-    this.$emit('pageTitleValue', 'Welcome back!');
+
   },
   methods: {
     getUserFullName() {
