@@ -41,7 +41,7 @@
         :to="{ name: 'login' }"
         class="d-none d-md-flex"
       >
-        SSO Login
+        {{$t('menu.login')}}
       </v-btn>
       <v-btn
         text
@@ -52,6 +52,28 @@
       >
         {{$store.state.User.fname}} {{$store.state.User.lname}}
       </v-btn>
+
+      <v-menu offset-y>
+        <template v-slot:activator="{ attrs, on }">
+          <v-btn
+            color="primary"
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >
+            {{$i18n.locale}}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-for="locale in localesList"
+            :key="locale"
+            @click="setLocale(locale)"
+          >
+            <v-list-item-title>{{locale}}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
 
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
@@ -81,7 +103,7 @@
             v-if="$store.state.VatsimSSO.authenticated == false"
             :to="{ name: 'login' }"
           >
-            <v-list-item-title>SSO Login</v-list-item-title>
+            <v-list-item-title>{{$t('menu.login')}}</v-list-item-title>
           </v-list-item>
           <v-list-item
             link
@@ -111,22 +133,59 @@ export default {
       appTitle: "French vACC",
       drawer: false,
       items: [
-        { title: "Home", name: "Landingpage.index" },
-        { title: "ATC", name: "Landingpage.ATC" },
-        { title: "Pilots", name: "Landingpage.pilots" },
-        { title: "Discord", name: "Landingpage.discord" },
-        { title: "Feedback", name: "Landingpage.feedback" },
+        { title: this.$t('menu.home'), name: "Landingpage.index" },
+        { title: this.$t('menu.atc'), name: "Landingpage.ATC" },
+        { title: this.$t('menu.pilots'), name: "Landingpage.pilots" },
+        { title: this.$t('menu.discord'), name: "Landingpage.discord" },
+        { title: this.$t('menu.feedback'), name: "Landingpage.feedback" },
       ],
+      localesList: this.$store.state.LocaleStore.localeList,
     }
   },
   mounted() {
 
   },
   methods: {
-
+    setLocale(locale) {
+      this.$store.dispatch('LocaleStore/changeLocale', locale)
+      .then(() => {
+        this.items = [
+          { title: this.$t('menu.home'), name: "Landingpage.index" },
+          { title: this.$t('menu.atc'), name: "Landingpage.ATC" },
+          { title: this.$t('menu.pilots'), name: "Landingpage.pilots" },
+          { title: this.$t('menu.discord'), name: "Landingpage.discord" },
+          { title: this.$t('menu.feedback'), name: "Landingpage.feedback" },
+        ]
+      });
+    }
   }
 }
 </script>
 
 <style scoped>
 </style>
+
+<i18n>
+{
+  "en": {
+    "menu": {
+      "home": "Home",
+      "atc": "ATC",
+      "pilots": "Pilots",
+      "discord": "Discord",
+      "feedback": "Feedback",
+      "login": "SSO Login"
+    }
+  },
+  "fr": {
+    "menu": {
+      "home": "Accueil",
+      "atc": "ATC",
+      "pilots": "Pilotes",
+      "discord": "Discord",
+      "feedback": "Feedback",
+      "login": "Connexion SSO"
+    }
+  }
+}
+</i18n>

@@ -137,6 +137,11 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async(to, from, next) => {
+  // Checks locale exists in localstorage
+  if (localStorage.getItem('locale') === null) {
+    localStorage.setItem('locale', store.state.LocaleStore.locale);
+  }
+
   // Checks if loader is stuck
   if (!localStorage.getItem('loadingContent') && store.state.AppState.loadingContent == true) {
     store.dispatch('AppState/setLoading');
