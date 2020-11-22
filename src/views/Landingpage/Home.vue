@@ -167,7 +167,7 @@ export default {
       "name": "Name",
       "rating": "Rating",
       "onlinesince": "Online Since",
-      "nonefound": "There is are ATC online at this time"
+      "nonefound": "There is no ATC online at this time"
     },
     "booking": {
       "nonefound": "No ATC bookings were found"
