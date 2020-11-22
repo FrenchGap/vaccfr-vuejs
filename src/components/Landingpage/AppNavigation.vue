@@ -25,10 +25,13 @@
         :key="index"
         text
         link
-        :to="item.url"
+        :to="{ name: item.name }"
+        exact
       >
         {{ item.title }}
       </v-btn>
+
+      <v-spacer></v-spacer>
 
       <v-btn
         text
@@ -65,11 +68,11 @@ export default {
       appTitle: "French vACC",
       drawer: false,
       items: [
-        { title: "Home", url: "/" },
-        { title: "ATC", url: "/atc" },
-        { title: "Pilots", url: "/pilots" },
-        { title: "Discord", url: "/discord" },
-        { title: "Feedback", url: "/Feedback" },
+        { title: "Home", name: "Landingpage.index" },
+        { title: "ATC", name: "Landingpage.ATC" },
+        { title: "Pilots", name: "Landingpage.pilots" },
+        { title: "Discord", name: "Landingpage.discord" },
+        { title: "Feedback", name: "Landingpage.feedback" },
       ],
     }
   },

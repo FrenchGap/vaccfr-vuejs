@@ -24,33 +24,31 @@ const routes = [
       },
       {
         path: 'pilots',
-        name: 'Landingpage.Pilots',
+        name: 'Landingpage.pilots',
         component: () => import('../views/Landingpage/Home'),
       },
       {
         path: 'feedback',
-        name: 'Landingpage.Feedback',
+        name: 'Landingpage.feedback',
         component: () => import('../views/Landingpage/Feedback'),
       },
       {
         path: 'contact',
-        name: 'Landingpage.Contact',
+        name: 'Landingpage.contact',
         component: () => import('../views/Landingpage/Home'),
       },
       {
         path: 'discord',
-        // beforeEnter() {
-        //   window.location = "https://vatsim.fr/discord";
-        // }
+        name: 'Landingpage.discord',
+        beforeEnter: (to, from, next) => {
+          window.open("https://vatsim.fr/discord", '_blank');
+          next({ name: 'Landingpage.index' });
+        }
       },
       {
         path: 'policies',
         name: 'Landingpage.policies',
         component: () => import('../views/Landingpage/Policies')
-      },
-      {
-        path: 'contact',
-        name: 'Landingpage.contact',
       },
       {
         path: 'login',

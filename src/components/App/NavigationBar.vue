@@ -27,7 +27,7 @@
           </v-btn>
         </template>
         <v-list>
-          <v-list-item link v-for="(item, index) in rightMenu" :key="index" :to="{ name: item.name }">
+          <v-list-item link v-for="(item, index) in rightMenu" :key="index" :to="{ name: item.name }" exact>
             <v-list-item-title>{{item.text}}</v-list-item-title>
             <v-list-item-icon>
               <v-icon>{{item.icon}}</v-icon>
@@ -46,8 +46,7 @@
         dense
       >
         <div v-for="(section, i) in navigationDrawer" :key="i">
-          <!-- <v-list-item>{{ section.section_name }}</v-list-item> -->
-          <v-list-item link v-for="(item, j) in section.items" :key="j" :to="{ name: item.name }">
+          <v-list-item link v-for="(item, j) in section.items" :key="j" :to="{ name: item.name }" exact>
             <v-list-item-icon><v-icon>{{ item.icon }}</v-icon></v-list-item-icon>
             <v-list-item-title>{{ item.text }}</v-list-item-title>
           </v-list-item>
@@ -55,12 +54,27 @@
         </div>
       </v-list>
     </v-navigation-drawer>
+    <v-row class="ml-3 mt-2">
+      <v-col cols="12">
+        <div
+          class="text-h3"
+        >
+          {{pageTitle}}
+        </div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 export default {
   name: "DashboardNavigationBar",
+  props: {
+    pageTitle: {
+      type: String,
+      required: true,
+    }
+  },
   data() {
     return {
       rightMenu: [
