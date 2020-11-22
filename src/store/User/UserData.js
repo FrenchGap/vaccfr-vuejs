@@ -61,12 +61,12 @@ export const UserData = {
     },
 
     async fetchUserData() {
-      if (localStorage.getItem('token')) {
+      if (localStorage.getItem('token') || store.state.VatsimSSO.token) {
         var params = {
-          'api_token': localStorage.getItem('token'),
+          'api_token': (localStorage.getItem('token')) ? localStorage.getItem('token') : store.state.VatsimSSO.token,
           'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
         };
-        await Axios.get(process.env.VUE_APP_API_URL + '/user', {
+        var resultingState = await Axios.get(process.env.VUE_APP_API_URL + '/user', {
           params: params
         })
         .then((response) => {
@@ -78,18 +78,19 @@ export const UserData = {
           store.dispatch('VatsimSSO/logoutUser');
           return false;
         });
+        return resultingState;
       } else {
         return false;
       }
     },
 
     async fetchUserQuickStats() {
-      if (localStorage.getItem('token')) {
+      if (localStorage.getItem('token') || store.state.VatsimSSO.token) {
         var params = {
-          'api_token': localStorage.getItem('token'),
+          'api_token': (localStorage.getItem('token')) ? localStorage.getItem('token') : store.state.VatsimSSO.token,
           'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
         };
-        await Axios.get(process.env.VUE_APP_API_URL + '/user/quickStats', {
+        var resultingState = await Axios.get(process.env.VUE_APP_API_URL + '/user/quickStats', {
           params: params
         })
         .then((response) => {
@@ -101,6 +102,7 @@ export const UserData = {
           store.dispatch('VatsimSSO/logoutUser');
           return false;
         });
+        return resultingState;
       } else {
         return false;
       }

@@ -59,10 +59,13 @@ export default {
     getUserQuickStats() {
       this.$store.getters['User/fetchUserQuickStats']
       .then(() => {
-        this.userPilotHours = this.$store.state.User.PilotHours;
-        this.userATCHours = this.$store.state.User.ATCHours;
-        this.userLastCallsign = this.$store.state.User.LastCallsign;
-        this.loadingStats = false;
+        if (this.$store.state.User.ATCHours) {
+          console.log();
+          this.userPilotHours = this.$store.state.User.PilotHours;
+          this.userATCHours = this.$store.state.User.ATCHours;
+          this.userLastCallsign = this.$store.state.User.LastCallsign;
+          this.loadingStats = false;
+        }
       });
     }
   }

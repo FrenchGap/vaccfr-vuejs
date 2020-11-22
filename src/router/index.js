@@ -148,17 +148,22 @@ router.beforeEach(async(to, from, next) => {
   }
 
   // Checks if VUEX data is dead but still authenticated
-  if (store.state.VatsimSSO.authenticated == false && localStorage.getItem('token')) {
-    var fetchedUserDataState = store.getters['User/fetchUserData'];
-    if (fetchedUserDataState) {
-      next();
-    }
+  if (localStorage.getItem('token') && !store.state.VatsimSSO.token) {
+    store.dispatch('AppState/setLoading', true);
+    store.getters['User/fetchUserData']
+    .then((response) => {
+      if (response) {
+        store.dispatch('VatsimSSO/setToken', localStorage.getItem('token'));
+      }
+    });
+    store.dispatch('AppState/setLoading', false);
   }
 
   // Set route titles from meta tags
   const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
   if(nearestWithTitle) document.title = nearestWithTitle.meta.title;
 
+  // Authenticated middleware
   const requiresAuthenticated = to.matched.some(record => record.meta.requiresAuthenticated);
   if (requiresAuthenticated && store.state.VatsimSSO.authenticated == false) {
     var isAuthenticated = store.getters['VatsimSSO/getAuthenticationState'];
