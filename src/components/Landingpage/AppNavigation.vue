@@ -1,14 +1,14 @@
 <template>
-  <v-parallax
+  <v-img
     :src="mastheadPath"
-    class="masthead"
     dark
-    max-height="500px"
+    max-height="550px"
+    gradient="to right, rgba(0,0,0,0.5), rgba(0,0,0,0.5)"
   >
     <v-app-bar
       absolute
       flat
-      color="black"
+      color="transparent"
       dark
       height="80px"
     >
@@ -127,7 +127,7 @@
       </v-menu>
 
     </v-app-bar>
-  </v-parallax>
+  </v-img>
 </template>
 
 <script>
