@@ -2,7 +2,7 @@
   <v-img
     :src="mastheadPath"
     dark
-    max-height="550px"
+    max-height="500px"
     gradient="to right, rgba(0,0,0,0.5), rgba(0,0,0,0.5)"
   >
     <v-app-bar

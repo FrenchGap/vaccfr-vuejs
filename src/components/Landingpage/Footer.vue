@@ -36,6 +36,7 @@ export default {
       links: [
         { text: "Policies", name: "Landingpage.policies" },
         { text: "Staff roster", name: "Dashboard.index" },
+        { text: "Solo approvals", name: "Dashboard.index" },
         { text: "Contact", name: "Landingpage.contact" },
       ]
     }
