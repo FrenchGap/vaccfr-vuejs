@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { Events } from './Content/Events'
+import { News } from './Content/News'
 import { AppState } from './General/AppState'
 import { LocaleStore } from './General/LocaleStore'
 import { UserData } from './User/UserData'
@@ -20,8 +22,12 @@ export default new Vuex.Store({
   modules: {
     AppState: AppState,
     LocaleStore: LocaleStore,
+
     User: UserData,
     VatsimSSO: VatsimSSO,
     VatsimData: VatsimData,
+
+    News: News,
+    Events: Events,
   }
 })
