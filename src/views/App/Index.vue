@@ -24,6 +24,9 @@
             <v-col cols="12">
               <ATCBooking />
             </v-col>
+            <v-col cols="12">
+              <NewsCarousel />
+            </v-col>
           </v-row>
         </v-col>
       </v-row>
@@ -36,13 +39,15 @@ import UserProfileCard from '../../components/App/User/UserProfileCard.vue';
 import StatsCard from '../../components/App/User/StatsCard.vue';
 import EventsCarousel from '../../components/App/Feeds/EventsCarousel.vue';
 import ATCBooking from '../../components/Landingpage/Modules/ATCBooking.vue';
+import NewsCarousel from '../../components/App/Feeds/NewsCarousel.vue';
 
 export default {
   components: {
     UserProfileCard,
     StatsCard,
     EventsCarousel,
-    ATCBooking
+    ATCBooking,
+    NewsCarousel
   },
   name: "DashboardIndex",
   data() {

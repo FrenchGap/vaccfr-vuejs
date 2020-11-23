@@ -145,7 +145,6 @@
       <v-spacer></v-spacer>
       <v-btn
         color="success"
-        text
         outlined
       >
         
@@ -153,7 +152,6 @@
       </v-btn>
       <v-btn
         color="red"
-        text
         outlined
       >
         {{$t('content.clearbtn')}}
