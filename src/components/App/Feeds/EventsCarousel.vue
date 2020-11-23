@@ -10,7 +10,6 @@
     <v-carousel
       cycle
       :interval="cycleInterval"
-      height="350"
       show-arrows-on-hover
       delimiter-icon="mdi-circle-medium"
       @change="carouselChange"
@@ -57,7 +56,7 @@ export default {
   name: "EventsCarousel",
   props: {
     cycleInterval: {
-      required: true
+      default: 6000
     }
   },
   data() {

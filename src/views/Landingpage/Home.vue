@@ -2,7 +2,7 @@
   <v-layout fill-height>
     <v-container>
       <v-row>
-        <v-col cols="12" md="8">
+        <v-col cols="12" md="6">
           <v-row>
             <v-col cols="12">
               <v-card
@@ -15,11 +15,11 @@
               </v-card>
             </v-col>
             <v-col cols="12">
-              <EventsCarousel :cycleInterval="6000" />
+              <EventsCarousel />
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-row>
             <v-col cols="12">
               <OnlineATC />

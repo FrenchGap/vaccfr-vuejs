@@ -2,7 +2,7 @@
   <v-layout fill-height>
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="6" lg="3">
           <v-row>
             <v-col cols="12">
               <UserProfileCard />
@@ -12,15 +12,19 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" md="5">
+        <v-col cols="12" md="6" lg="5">
           <v-row>
             <v-col cols="12">
               <EventsCarousel cycleInterval="6000" />
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" md="4">
-
+        <v-col cols="12" md="4" lg="4">
+          <v-row>
+            <v-col cols="12">
+              <ATCBooking />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -31,12 +35,14 @@
 import UserProfileCard from '../../components/App/User/UserProfileCard.vue';
 import StatsCard from '../../components/App/User/StatsCard.vue';
 import EventsCarousel from '../../components/App/Feeds/EventsCarousel.vue';
+import ATCBooking from '../../components/Landingpage/Modules/ATCBooking.vue';
 
 export default {
   components: {
     UserProfileCard,
     StatsCard,
-    EventsCarousel
+    EventsCarousel,
+    ATCBooking
   },
   name: "DashboardIndex",
   data() {
