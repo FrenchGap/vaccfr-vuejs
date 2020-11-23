@@ -1,6 +1,6 @@
 <template>
   <v-card
-    elevation="3"
+    elevation="5"
   >
     <v-system-bar color="black" dark>
       <v-icon>mdi-account</v-icon>

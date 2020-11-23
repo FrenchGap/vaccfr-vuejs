@@ -1,8 +1,14 @@
 <template>
   <v-card
-    elevation="3"
+    elevation="5"
   >
-    <v-card-title>ATC Booking</v-card-title>
+    <v-system-bar
+      color="black"
+      dark
+    >
+      <v-icon>mdi-calendar</v-icon>
+      <span>{{$t('booking.title')}}</span>
+    </v-system-bar>
     <v-card-subtitle>{{getCurrentDate()}}</v-card-subtitle>
     <v-card-text>
       <v-simple-table v-if="bookingsList.length > 0">
@@ -77,11 +83,13 @@ export default {
 {
   "en": {
     "booking": {
+      "title": "ATC Booking",
       "nonefound": "No ATC bookings were found"
     }
   },
   "fr": {
     "booking": {
+      "title": "Réservations ATC",
       "nonefound": "Aucun booking n'a été trouvé"
     }
   }

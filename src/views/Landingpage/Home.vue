@@ -2,11 +2,11 @@
   <v-layout fill-height>
     <v-container>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" md="8">
           <v-row>
             <v-col cols="12">
               <v-card
-                elevation="3"
+                elevation="5"
               >
                 <v-card-title>{{$t('welcomeBoxContent.welcome')}}</v-card-title>
                 <v-card-text>
@@ -14,15 +14,20 @@
                 </v-card-text>
               </v-card>
             </v-col>
+            <v-col cols="12">
+              <EventsCarousel :cycleInterval="6000" />
+            </v-col>
           </v-row>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" md="6">
-          <OnlineATC />
-        </v-col>
-        <v-col cols="12" md="6">
-          <ATCBooking />
+        <v-col cols="12" md="4">
+          <v-row>
+            <v-col cols="12">
+              <OnlineATC />
+            </v-col>
+            <v-col cols="12">
+              <ATCBooking />
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-container>
@@ -32,9 +37,14 @@
 <script>
 import OnlineATC from '@/components/Landingpage/Modules/OnlineATC.vue';
 import ATCBooking from '@/components/Landingpage/Modules/ATCBooking.vue';
+import EventsCarousel from '../../components/App/Feeds/EventsCarousel.vue';
 
 export default {
-  components: { OnlineATC, ATCBooking },
+  components: {
+    OnlineATC,
+    ATCBooking,
+    EventsCarousel
+  },
   name: 'Home',
   data() {
     return {

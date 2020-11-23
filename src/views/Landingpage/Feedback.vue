@@ -2,31 +2,26 @@
   <v-layout fill-height>
     <v-container>
       <v-row>
-        <v-col cols="12">
+        <v-col cols="12" class="d-flex justify-center">
+          <FeedbackForm v-if="$store.state.VatsimSSO.authenticated" />
           <v-card
-            elevation="3"
+            elevation="5"
+            v-else
+            max-width="500"
           >
-            <v-card-title>Feedback</v-card-title>
-            <v-card-subtitle>Leave our controllers some feedback if you appreciated the services, and especially if you did not!</v-card-subtitle>
-            <v-card-text>
-              <FeedbackForm />
+            <v-card-title>{{$t('content.title')}}</v-card-title>
+            <v-card-text v-html="$t('content.warning')">
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
-                color="success"
+                color="primary"
                 text
+                link
                 outlined
+                :to="{ name: 'login' }"
               >
-                
-                Submit
-              </v-btn>
-              <v-btn
-                color="red"
-                text
-                outlined
-              >
-                Clear
+                {{$t('content.loginbutton')}}
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -52,6 +47,23 @@ export default {
 }
 </script>
 
-<style>
+<style scoped></style>
 
-</style>
+<i18n>
+{
+  "en": {
+    "content": {
+      "title": "ATC Feedback",
+      "warning": "To avoid any identity theft and to keep you and our users safe, <br>you must be authenticated to submit an ATC feedback.<br>Authentication is simple and uses the official VATSIM SSO.",
+      "loginbutton": "Login with SSO"
+    }
+  },
+  "fr": {
+    "content": {
+      "title": "Feedback ATC",
+      "warning": "Pour éviter toutes usurpations d'identité et pour garantir votre sécurité et celle de nos membres, <br>vous devez être authentifié afin de soumettre un feedback.<br>L'authentification est simple et se fait avec le portail sécurisé du SSO VATSIM",
+      "loginbutton": "M'authentifier avec le SSO"
+    }
+  }
+}
+</i18n>

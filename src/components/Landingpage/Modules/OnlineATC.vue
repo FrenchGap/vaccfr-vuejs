@@ -1,8 +1,14 @@
 <template>
   <v-card
-    elevation="3"
+    elevation="5"
   >
-    <v-card-title>{{$t('onlineATCBox.title')}}</v-card-title>
+    <v-system-bar
+      color="black"
+      dark
+    >
+      <v-icon>mdi-radar</v-icon>
+      <span>{{$t('onlineATCBox.title')}}</span>
+    </v-system-bar>
     <v-card-subtitle>{{$t('onlineATCBox.updated', { time: lastUpdatedATCTimestamp })}}</v-card-subtitle>
     <v-card-text>
       <v-simple-table v-if="onlineATCList.length > 0">
