@@ -7,7 +7,7 @@
       clipped-left
     >
       <v-app-bar-nav-icon
-        class="d-sm-flex d-md-none"
+        class="d-md-flex d-lg-none"
         @click="rightMenuDrawer = !rightMenuDrawer"
       ></v-app-bar-nav-icon>
 
@@ -17,7 +17,7 @@
 
       <v-spacer></v-spacer>
 
-      <span>UTC time: {{ UTCTime }}</span>
+      <span>UTC: {{ UTCTime }}</span>
 
       <v-spacer></v-spacer>
 
@@ -62,8 +62,9 @@
     </v-navigation-drawer>
     <v-navigation-drawer
       app
-      class="d-sm-flex d-md-none"
+      class="d-md-flex d-lg-none"
       v-model="rightMenuDrawer"
+      temporary
     >
       <v-list
         nav
@@ -78,14 +79,14 @@
         </div>
       </v-list>
     </v-navigation-drawer>
-    <v-row class="ml-3 mt-2">
-      <v-col cols="12">
-        <div
-          class="text-h3"
-        >
-          {{pageTitle}}
-        </div>
-      </v-col>
+    <v-row class="mt-4">
+      <v-spacer></v-spacer>
+      <div
+        class="text-h3"
+      >
+        {{pageTitle}}
+      </div>
+      <v-spacer></v-spacer>
     </v-row>
   </div>
 </template>

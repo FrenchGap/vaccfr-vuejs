@@ -1,6 +1,6 @@
 <template>
   <v-layout fill-height>
-    <v-container fluid>
+    <v-container>
       <v-row>
         <v-col cols="12" md="6" lg="3">
           <v-row>
@@ -15,7 +15,7 @@
         <v-col cols="12" md="6" lg="5">
           <v-row>
             <v-col cols="12">
-              <EventsCarousel cycleInterval="6000" />
+              <EventsCarousel :cycleOn="false" />
             </v-col>
           </v-row>
         </v-col>

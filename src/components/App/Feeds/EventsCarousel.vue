@@ -8,7 +8,7 @@
       <span>Events</span>
     </v-system-bar>
     <v-carousel
-      cycle
+      :cycle="cycleOn"
       :interval="cycleInterval"
       show-arrows-on-hover
       delimiter-icon="mdi-circle-medium"
@@ -55,9 +55,10 @@
 export default {
   name: "EventsCarousel",
   props: {
-    cycleInterval: {
-      default: 6000
-    }
+    cycleOn: {
+      default: false
+    },
+    cycleInterval: {}
   },
   data() {
     return {
