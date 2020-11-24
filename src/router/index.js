@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store'
+import Cookies from 'js-cookie'
 
 Vue.use(VueRouter)
 
@@ -55,7 +56,10 @@ const routes = [
         name: 'login',
         beforeEnter: (to, from, next) => {
           store.dispatch('VatsimSSO/authenticateUser');
-          if (from.name !== null) {
+          if (to.query.redirect) {
+            Cookies.set('postloginredirect', to.query.redirect);
+          }
+          if (from.name) {
             return next({ name: from.name });
           }
           next({ name: 'Landingpage.index' });
@@ -64,10 +68,15 @@ const routes = [
       {
         path: 'ssologin',
         beforeEnter: async(to, from, next) => {
+          let nextRoute = "Landingpage.index";
           if (to.query.code) {
             store.dispatch('VatsimSSO/authenticateData', to.query.code)
           }
-          next({ name: 'Landingpage.index' });
+          if (Cookies.get('postloginredirect')) {
+            nextRoute = Cookies.get('postloginredirect');
+            Cookies.remove('postloginredirect');
+          }
+          next({ name: nextRoute });
         },
       },
       {

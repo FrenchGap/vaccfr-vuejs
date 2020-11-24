@@ -19,7 +19,7 @@
                 text
                 link
                 outlined
-                :to="{ name: 'login' }"
+                :to="{ name: 'login', query: { redirect: 'Landingpage.feedback' } }"
               >
                 {{$t('content.loginbutton')}}
               </v-btn>
