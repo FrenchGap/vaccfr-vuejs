@@ -21,6 +21,39 @@
 
       <v-spacer></v-spacer>
 
+      <v-menu offset-y>
+        <template v-slot:activator="{ attrs, on }">
+          <v-btn
+            dark
+            v-bind="attrs"
+            v-on="on"
+          >
+            <v-img
+              :src="require(`@/assets/localesFlags/${$i18n.locale}-flag.png`)"
+              height="28px"
+              width="28px"
+            >
+            </v-img>
+          </v-btn>
+        </template>
+        <v-list dark>
+          <v-list-item
+            v-for="locale in localesList"
+            :key="locale"
+            @click="setLocale(locale)"
+          >
+            <v-list-item-title>
+              <v-img
+                :src="require(`@/assets/localesFlags/${locale}-flag.png`)"
+                height="28px"
+                width="28px"
+              >
+              </v-img>
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+
       <v-menu offset-y rounded="lg">
         <template v-slot:activator="{ on, attrs }">
           <v-btn
@@ -122,7 +155,8 @@ export default {
           ]
         }
       ],
-      UTCTime: ""
+      UTCTime: "",
+      localesList: this.$store.state.LocaleStore.localeList,
     }
   },
   mounted() {
@@ -137,6 +171,12 @@ export default {
     checkTime(i) {
       if (i < 10) {i = "0" + i}
       return i;
+    },
+    setLocale(locale) {
+      this.$store.dispatch('LocaleStore/changeLocale', locale)
+      .then(() => {
+        // Set here the new navigation menu items
+      });
     }
   }
 }
