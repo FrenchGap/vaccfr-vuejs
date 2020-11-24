@@ -114,6 +114,21 @@ const routes = [
       {
         path: 'profile',
         name: 'Dashboard.profile',
+        component: () => import('../views/App/Profile'),
+        children: [
+          {
+            path: 'settings',
+            name: 'Dashboard.profile.settings',
+          },
+          {
+            path: 'statistics',
+            name: 'Dashboard.profile.stats'
+          },
+          {
+            path: 'gdprdata',
+            name: 'Dashboard.profile.gdprdata',
+          },
+        ]
       },
       {
         path: 'atc',

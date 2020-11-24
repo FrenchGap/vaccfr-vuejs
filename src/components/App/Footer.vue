@@ -1,6 +1,5 @@
 <template>
   <v-footer
-    app
     inset
     class="font-weight-medium"
   >
