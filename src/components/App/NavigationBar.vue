@@ -142,16 +142,16 @@ export default {
       rightMenuDrawer: false,
       navigationDrawer: [
         { section_name: "General", items: [
-          { text: "Home", icon: "mdi-home", name: "Dashboard.index" },
-          { text: "Library", icon: "mdi-book", name: "Dashboard.library" },
-          { text: "Calendar", icon: "mdi-calendar", name: "Dashboard.calendar" },
-          { text: "My Profile", icon: "mdi-account", name: "Dashboard.profile" },
+          { text: this.$t('menu.general.home'), icon: "mdi-home", name: "Dashboard.index" },
+          { text: this.$t('menu.general.library'), icon: "mdi-book", name: "Dashboard.library" },
+          { text: this.$t('menu.general.calendar'), icon: "mdi-calendar", name: "Dashboard.calendar" },
+          { text: this.$t('menu.general.myprofile'), icon: "mdi-account", name: "Dashboard.profile" },
         ] },
         {
           section_name: "ATC", items: [
-            { text: "Roster", icon: "mdi-account-group", name: "Dashboard.atc.roster" },
-            { text: "Booking", icon: "mdi-clock", name: "Dashboard.atc.booking" },
-            { text: "Resources", icon: "mdi-folder", name: "Dashboard.atc.resources" },
+            { text: this.$t('menu.atc.roster'), icon: "mdi-account-group", name: "Dashboard.atc.roster" },
+            { text: this.$t('menu.atc.booking'), icon: "mdi-clock", name: "Dashboard.atc.booking" },
+            { text: this.$t('menu.atc.resources'), icon: "mdi-folder", name: "Dashboard.atc.resources" },
           ]
         }
       ],
@@ -175,13 +175,61 @@ export default {
     setLocale(locale) {
       this.$store.dispatch('LocaleStore/changeLocale', locale)
       .then(() => {
-        // Set here the new navigation menu items
+        this.navigationDrawer = [
+          { section_name: "General", items: [
+            { text: this.$t('menu.general.home'), icon: "mdi-home", name: "Dashboard.index" },
+            { text: this.$t('menu.general.library'), icon: "mdi-book", name: "Dashboard.library" },
+            { text: this.$t('menu.general.calendar'), icon: "mdi-calendar", name: "Dashboard.calendar" },
+            { text: this.$t('menu.general.myprofile'), icon: "mdi-account", name: "Dashboard.profile" },
+          ] },
+          {
+            section_name: "ATC", items: [
+              { text: this.$t('menu.atc.roster'), icon: "mdi-account-group", name: "Dashboard.atc.roster" },
+              { text: this.$t('menu.atc.booking'), icon: "mdi-clock", name: "Dashboard.atc.booking" },
+              { text: this.$t('menu.atc.resources'), icon: "mdi-folder", name: "Dashboard.atc.resources" },
+            ]
+          }
+        ]
       });
     }
   }
 }
 </script>
 
-<style>
-
+<style scoped>
 </style>
+
+<i18n>
+{
+  "en": {
+    "menu": {
+      "general": {
+        "home": "Home",
+        "library": "Library",
+        "calendar": "Calendar",
+        "myprofile": "My Profile"
+      },
+      "atc": {
+        "roster": "Roster",
+        "booking": "Booking",
+        "resources": "Resources"
+      }
+    }
+  },
+  "fr": {
+    "menu": {
+      "general": {
+        "home": "Accueil",
+        "library": "Librairie",
+        "calendar": "Calendrier",
+        "myprofile": "Mon Profil"
+      },
+      "atc": {
+        "roster": "Roster",
+        "booking": "Réservations",
+        "resources": "Ressources"
+      }
+    }
+  }
+}
+</i18n>
