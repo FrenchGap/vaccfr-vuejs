@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { Bookings } from './ATC/Bookings'
 import { Events } from './Content/Events'
 import { News } from './Content/News'
 import { AppState } from './General/AppState'
@@ -29,5 +30,7 @@ export default new Vuex.Store({
 
     News: News,
     Events: Events,
+
+    ATCBookings: Bookings,
   }
 })

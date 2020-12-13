@@ -49,6 +49,8 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   name: "OnlineATC",
   data() {
@@ -63,13 +65,26 @@ export default {
   },
   methods: {
     async fetchOnlineATC() {
-      this.onlineATCList = this.$store.dispatch('VatsimData/updateOnlineATC')
+      this.onlineATCList = this.getOnlineATCData()
       .then(() => {
         this.onlineATCList = this.$store.getters['VatsimData/getOnlineATCList'];
         this.lastUpdatedATCTimestamp = this.$store.getters['VatsimData/getOnlineATCListUpdateTime'];
         this.loadingOnlineATC = false;
       });
     },
+
+    async getOnlineATCData() {
+      var params = {
+        'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
+      };
+      return Axios.get(process.env.VUE_APP_API_URL + '/vatsimdata/onlineatc', {
+        params: params
+      })
+      .then((response) => {
+        this.$store.dispatch('VatsimData/setOnlineATC', response.data.data);
+      })
+      .catch(() => {});
+    }
   }
 }
 </script>

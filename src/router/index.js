@@ -111,41 +111,37 @@ const routes = [
         path: 'calendar',
         name: 'Dashboard.calendar',
       },
+      // Profile related pages
       {
         path: 'profile',
         name: 'Dashboard.profile',
-        component: () => import('../views/App/Profile'),
-        children: [
-          {
-            path: 'settings',
-            name: 'Dashboard.profile.settings',
-          },
-          {
-            path: 'statistics',
-            name: 'Dashboard.profile.stats'
-          },
-          {
-            path: 'gdprdata',
-            name: 'Dashboard.profile.gdprdata',
-          },
-        ]
+        component: () => import('../views/App/Profile')
       },
       {
-        path: 'atc',
-        children: [
-          {
-            path: 'roster',
-            name: 'Dashboard.atc.roster'
-          },
-          {
-            path: 'booking',
-            name: 'Dashboard.atc.booking'
-          },
-          {
-            path: 'resources',
-            name: 'Dashboard.atc.resources'
-          },
-        ]
+        path: 'profile/settings',
+        name: 'Dashboard.profile.settings',
+      },
+      {
+        path: 'profile/statistics',
+        name: 'Dashboard.profile.stats'
+      },
+      {
+        path: 'profile/gdprdata',
+        name: 'Dashboard.profile.gdprdata',
+      },
+      // ATC related pages
+      {
+        path: 'atc/booking',
+        name: 'Dashboard.atc.booking',
+        component: () => import('../views/App/ATC/Booking'),
+      },
+      {
+        path: 'atc/roster',
+        name: 'Dashboard.atc.roster'
+      },
+      {
+        path: 'atc/resources',
+        name: 'Dashboard.atc.resources'
       },
     ]
   },

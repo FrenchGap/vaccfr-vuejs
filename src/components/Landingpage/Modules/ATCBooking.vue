@@ -22,10 +22,10 @@
         </thead>
         <tbody>
           <tr v-for="(item, index) in bookingsList" :key="index">
-            <td>{{ item.callsign }}</td>
-            <td>{{ item.name }}</td>
-            <td>{{ item.time }}</td>
-            <td>{{ item.rating }}</td>
+            <td>{{ item.position }}</td>
+            <td>{{ item.user.fname }} {{ item.user.lname }}</td>
+            <td>{{ convertDateToTime(item.start_date) }} - {{ convertDateToTime(item.end_date) }}</td>
+            <td>{{ item.user.atc_rating_short }}</td>
           </tr>
         </tbody>
       </v-simple-table>
@@ -49,6 +49,9 @@
 </template>
 
 <script>
+import Axios from "axios";
+import moment from "moment";
+
 export default {
   name: "ATCBooking",
   data() {
@@ -62,14 +65,36 @@ export default {
   },
   methods: {
     async fetchBookings() {
-      this.loadingBookings = false;
+      this.bookingsList = this.getBookings()
+      .then(() => {
+        this.bookingsList = this.$store.getters['ATCBookings/getATCBookingsList'];
+        this.loadingBookings = false;
+      });
     },
+
+    async getBookings() {
+      var params = {
+        'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
+      };
+      return Axios.get(process.env.VUE_APP_API_URL + '/atc/allbookings', {
+        params: params
+      })
+      .then((response) => {
+        this.$store.dispatch('ATCBookings/setATCBookings', response.data.bookings);
+      })
+      .catch(() => {});
+    },
+
     getCurrentDate() {
       var today = new Date();
       var dd = String(today.getDate()).padStart(2, '0');
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = today.getFullYear();
       return dd + '/' + mm + '/' + yyyy;
+    },
+
+    convertDateToTime(date) {
+      return moment(date, "YYYY-MM-DD hh:mm:ss").format('hh:mm')
     }
   }
 }

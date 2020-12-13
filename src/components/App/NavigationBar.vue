@@ -211,8 +211,8 @@ export default {
       },
       "atc": {
         "roster": "Roster",
-        "booking": "Booking",
-        "resources": "Resources"
+        "booking": "ATC Booking",
+        "resources": "ATC Tools & Resources"
       }
     }
   },
@@ -226,8 +226,8 @@ export default {
       },
       "atc": {
         "roster": "Roster",
-        "booking": "Réservations",
-        "resources": "Ressources"
+        "booking": "Réservations ATC",
+        "resources": "Ressources & Outils ATC"
       }
     }
   }
