@@ -59,7 +59,7 @@
           </v-dialog>
         </v-form>
       </v-card-text>
-      <v-card-actions v-if="date != ''">
+      <v-card-actions v-if="date != null">
         <v-spacer></v-spacer>
         <v-btn
           color="success"
@@ -71,7 +71,7 @@
         <v-btn
           color="red"
           outlined
-          @click="date = ''"
+          @click="date = null"
         >
           {{$t('content.clearbtn')}}
         </v-btn>
@@ -117,6 +117,7 @@
                 step="2"
               >
                 Time
+                <small v-if="chosenEndTime && bookingOptionsStepper > 2">{{chosenStartTime}} - {{chosenEndTime}}</small>
               </v-stepper-step>
               <v-divider></v-divider>
               <v-stepper-step
@@ -126,6 +127,7 @@
                 step="3"
               >
                 Position
+                <small v-if="chosenPosition && bookingOptionsStepper > 3">{{chosenPosition}}</small>
               </v-stepper-step>
               <v-divider></v-divider>
               <v-stepper-step
@@ -402,6 +404,9 @@
                           hide-details=""
                           label="Choose FIR"
                           single-line
+                          :items="availableFIR"
+                          :item-text="(item) => {return `${item.name} - ${item.icao}`}"
+                          item-value="id"
                         ></v-select>
                       </v-col>
                       <v-col cols="12" md="6">
@@ -412,15 +417,31 @@
                           hide-details=""
                           label="Choose Control Position"
                           single-line
-                          disabled
+                          :items="availablePositionsComputed(chosenFIR)"
+                          :item-text="(item) => {return `${item.code} - ${item.callsign}`}"
+                          item-value="code"
+                          :disabled="!hasChosenFIR()"
                         ></v-select>
                       </v-col>
                     </v-row>
                   </v-card-text>
+                  <v-card-actions v-if="hasChosenFIR()">
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="red"
+                      outlined
+                      @click="() => {
+                        chosenFIR = null
+                        chosenPosition = null
+                      }"
+                    >
+                      Reset
+                    </v-btn>
+                  </v-card-actions>
                 </v-card>
                 <v-btn
                   color="primary"
-                  @click="bookingOptionsStepper = 4"
+                  @click="submitChosenPosition(chosenPosition)"
                   :disabled="!hasChosenPosition()"
                 >
                   Submit position
@@ -515,7 +536,7 @@ export default {
   data() {
     return {
       loadingPanel: false,
-      date: "2020-12-15",
+      date: null,
       dateModal: false,
       minDate: this.getDateToday(),
       maxDate: this.getDatePlusNDays(14),
@@ -534,6 +555,8 @@ export default {
       chooseStartTimeDialog: false,
       chooseEndTimeDialog: false,
 
+      availableFIR: [],
+      availablePositions: [],
       chosenFIR: null,
       chosenPosition: null,
 
@@ -555,8 +578,10 @@ export default {
       this.eventPositions = [],
       this.bookingOptionsStepper = 1
 
-      this.chosenStartTime = null
-      this.chosenEndTime = null
+      this.chosenStartTime = null // RESET
+      this.chosenEndTime = null // RESET
+      this.chosenFIR = null
+      this.chosenPosition = null
     },
     allowedStep: m => m % 15 === 0,
     getDateToday() {
@@ -579,13 +604,19 @@ export default {
     },
     cancelAllDialog() {
       this.bookingPanelDialog = false;
-      this.date = "2020-12-15";
+      this.date = null;
     },
     convertDateToTime(date) {
       return moment(date, "YYYY-MM-DD hh:mm:ss").format('hh:mm')
     },
     hasChosenTime() {
       if (this.chosenStartTime && this.chosenEndTime) {
+        return true;
+      }
+      return false;
+    },
+    hasChosenFIR() {
+      if (this.chosenFIR) {
         return true;
       }
       return false;
@@ -613,7 +644,7 @@ export default {
             this.hasSpecialPosition = true;
           }
           if (!this.hasSpecialPosition) {
-            this.bookingOptionsStepper = 3 // normally 2
+            this.bookingOptionsStepper = 2 // normally 2
           }
           this.loadingPanel = false
           this.bookingPanelDialog = true;
@@ -660,7 +691,7 @@ export default {
       this.loadingBookingPanelDialog = true;
       console.log("Action to book blocked position")
       this.finalPosition = item.position
-      this.finalDate = moment(item.start_date, "YYYY-MM-DD hh:mm:ss").format('DD-MM-YYY')
+      this.finalDate = moment(item.start_date, "YYYY-MM-DD hh:mm:ss").format('DD-MM-YYYY')
       this.finalStartTime = moment(item.start_date, "YYYY-MM-DD hh:mm:ss").format('hh:mm')
       this.finalEndTime = moment(item.end_date, "YYYY-MM-DD hh:mm:ss").format('hh:mm')
       this.bookingConfirmed = true
@@ -671,7 +702,7 @@ export default {
       this.loadingBookingPanelDialog = true; 
       console.log("Action to book event position")
       this.finalPosition = item.position
-      this.finalDate = moment(item.start_date, "YYYY-MM-DD hh:mm:ss").format('DD-MM-YYY')
+      this.finalDate = moment(item.start_date, "YYYY-MM-DD hh:mm:ss").format('DD-MM-YYYY')
       this.finalStartTime = moment(item.start_date, "YYYY-MM-DD hh:mm:ss").format('hh:mm')
       this.finalEndTime = moment(item.end_date, "YYYY-MM-DD hh:mm:ss").format('hh:mm')
       this.finalEventName = item.event_name
@@ -684,9 +715,52 @@ export default {
     submitChosenTime(starttime, endtime) {
       this.loadingBookingPanelDialog = true;
       console.log("Action to fetch positions based on date and times")
-      console.log(starttime)
-      console.log(endtime)
-      this.bookingOptionsStepper = 3
+      this.fetchPositionsFromTime(this.date, starttime, endtime)
+      .then((available) => {
+        this.availableFIR = available.fir;
+        this.availablePositions = available.positions;
+        this.bookingOptionsStepper = 3;
+        this.loadingBookingPanelDialog = false;
+      })
+    },
+    async fetchPositionsFromTime(date, starttime, endtime) {
+      var params = {
+        'api_token': this.$store.state.VatsimSSO.token,
+        'app_auth_token': process.env.VUE_APP_FRONTEND_KEY,
+        'date': date,
+        'start_time': starttime,
+        'end_time': endtime
+      };
+      var result = await Axios.get(process.env.VUE_APP_API_URL + '/atc/getpositionsfromtime', {
+        params: params
+      })
+      .then((response) => {
+        return response.data;
+      })
+      .catch(() => {return null;});
+      return result;
+    },
+    availablePositionsComputed(firid) {
+      var clean_data = [];
+      if (firid) {
+        this.availablePositions.forEach(position => {
+          if (position.fir_id == firid) {
+            clean_data.push(position)
+          }
+        });
+      }
+      return clean_data;
+    },
+
+    submitChosenPosition(position) {
+      this.loadingBookingPanelDialog = true;
+      console.log("Action to submit the booking based on all received variables")
+      this.finalPosition = position
+      this.finalDate = moment(this.date, "YYYY-MM-DD").format('DD-MM-YYYY')
+      this.finalStartTime = this.chosenStartTime
+      this.finalEndTime = this.chosenEndTime
+      this.bookingConfirmed = true
+      this.bookingOptionsStepper = 4
       this.loadingBookingPanelDialog = false;
     }
   }
